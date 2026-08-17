@@ -1,0 +1,3 @@
+- insert:
+    - id: bigseed
+      name: "@kobenfang/dsh-bigseed"
