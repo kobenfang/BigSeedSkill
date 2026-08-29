@@ -2,6 +2,9 @@
 name: bigseed
 description: 🌱 Big Seed · 种子 — AI日记与人生故事生成器。闪念记录、捕捉生活点滴、感悟想法，从碎片信息构建用户画像，生成以用户为主人公的小说、电影剧本或自传。AI日记、回忆录、自传、人生故事一站式。种一颗种子，长一个世界。| AI diary, life story, memoir, biography, journal & novel generator.
 ---
+> **🌍 环境兼容（OpenClaw / DSH 双端）**
+> - 脚本在技能目录下执行（`python3 scripts/bigseed.py`），数据默认 `$DSH_WORKSPACE/memory/bigseed-data/` 或 `~/.openclaw/workspace/memory/bigseed-data/`。
+
 
 # 🌱 Big Seed · 种一个世界
 
@@ -50,15 +53,15 @@ memory/bigseed-data/          ← 唯一存储目录
 
 **新增种子时：**
 - 不能用 `write` 直接写 seeds.json
-- 必须调用 `python3 skills/bigseed/scripts/bigseed.py add` 脚本
+- 必须调用 `python3 scripts/bigseed.py add` 脚本
 - 脚本负责：生成 UUID、打时间戳、写入 JSON、自动排序
 
 **读取种子时：**
-- 用 `python3 skills/bigseed/scripts/bigseed.py query / stats / seeds-for-story`
+- 用 `python3 scripts/bigseed.py query / stats / seeds-for-story`
 - 不要手动读 JSON 文件（除非脚本出故障）
 
 **更新画像时：**
-- 用 `python3 skills/bigseed/scripts/bigseed.py portrait` 读取
+- 用 `python3 scripts/bigseed.py portrait` 读取
 - 模型分析种子数据后，通过脚本写回 portrait.json
 
 ### 错误处理
@@ -104,19 +107,19 @@ memory/bigseed-data/          ← 唯一存储目录
 
 ```bash
 # 新增种子
-python3 skills/bigseed/scripts/bigseed.py add --content "刚想到一个创业点子" [--image <path>] [--tags tag1,tag2]
+python3 scripts/bigseed.py add --content "刚想到一个创业点子" [--image <path>] [--tags tag1,tag2]
 
 # 查看种子
-python3 skills/bigseed/scripts/bigseed.py query [--from DATE] [--to DATE] [--type 感悟] [--emotion 温暖]
+python3 scripts/bigseed.py query [--from DATE] [--to DATE] [--type 感悟] [--emotion 温暖]
 
 # 查看画像
-python3 skills/bigseed/scripts/bigseed.py portrait
+python3 scripts/bigseed.py portrait
 
 # 生成故事（请模型写，脚本只提供数据）
-python3 skills/bigseed/scripts/bigseed.py seeds-for-story [--from DATE] [--to DATE] [--limit 20]
+python3 scripts/bigseed.py seeds-for-story [--from DATE] [--to DATE] [--limit 20]
 
 # 汇总统计
-python3 skills/bigseed/scripts/bigseed.py stats [--from DATE] [--to DATE]
+python3 scripts/bigseed.py stats [--from DATE] [--to DATE]
 ```
 
 ## 工作流程
@@ -141,7 +144,7 @@ python3 skills/bigseed/scripts/bigseed.py stats [--from DATE] [--to DATE]
 
 **第一步：必须保存**
 ```bash
-python3 skills/bigseed/scripts/bigseed.py add \
+python3 scripts/bigseed.py add \
   --content "用户原话" \
   --type "分析出的类型" \
   --emotion "分析出的情绪" \
@@ -261,8 +264,8 @@ python3 skills/bigseed/scripts/bigseed.py add \
 **流程说明：**
 
 1. 先依次执行两个 Python 脚本（各约 1-2 秒）：
-   - `python3 skills/bigseed/scripts/bigseed.py stats --from <本周一> --to <本周日>` — 统计本周种子数
-   - `python3 skills/bigseed/scripts/bigseed.py seeds-for-story --from <7天前> --limit 20` — 拉取种子数据 + 画像
+   - `python3 scripts/bigseed.py stats --from <本周一> --to <本周日>` — 统计本周种子数
+   - `python3 scripts/bigseed.py seeds-for-story --from <7天前> --limit 20` — 拉取种子数据 + 画像
 2. 模型一次性拿到所有数据后，直接输出完整内容，**无需来回切工具**
 3. 内容经 `delivery.announce` 直接推送至用户聊天
 
@@ -277,8 +280,8 @@ python3 skills/bigseed/scripts/bigseed.py add \
 bigseed-weekly: 周六自动简报+画像+故事。
 
 [数据预取]
-1. 执行 python3 skills/bigseed/scripts/bigseed.py stats --from <本周一> --to <本周日>
-2. 执行 python3 skills/bigseed/scripts/bigseed.py seeds-for-story --from <7天前> --limit 20
+1. 执行 python3 scripts/bigseed.py stats --from <本周一> --to <本周日>
+2. 执行 python3 scripts/bigseed.py seeds-for-story --from <7天前> --limit 20
 
 [决策与输出]
 如果种子数≥3：

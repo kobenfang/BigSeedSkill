@@ -15,7 +15,8 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 TZ = timezone(timedelta(hours=8))
-DATA_DIR = Path(__file__).resolve().parent.parent / "memory" / "bigseed-data"
+import os
+DATA_DIR = Path(os.environ.get('DSH_WORKSPACE') or os.environ.get('OPENCLAW_WORKSPACE') or os.path.expanduser('~/.openclaw/workspace')) / "memory" / "bigseed-data"
 SEEDS_FILE = DATA_DIR / "seeds.json"
 PORTRAIT_FILE = DATA_DIR / "portrait.json"
 STORIES_FILE = DATA_DIR / "stories.json"
